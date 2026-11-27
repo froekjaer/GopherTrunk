@@ -424,6 +424,26 @@ No benchmarks were run. **No CPU or RAM figures in this document are measurement
 
 ---
 
+## 12.1 Confirmed AIS partner endpoint (operator supplied 2026-11-27)
+
+The operator has requested that the **existing AIS-catcher deployment** add one more outbound AIS feed, while preserving every existing destination:
+
+| Field | Value |
+|---|---|
+| Partner | AISHub |
+| DNS destination | `data.aishub.net` |
+| Provided IP (reference only) | `144.76.105.244` |
+| Transport | UDP |
+| Destination port | `2269` |
+| Expected content | AIS NMEA/AIVDM messages (confirm partner and AIS-catcher configuration requirements before deployment) |
+| Deployment status | **Requested; not configured or tested on Raspberry Pi** |
+
+**Implementation note:** This GitHub fork does **not** contain the operator's current AIS-catcher Compose file or its live arguments. The repository-root `docker-compose.yml` is a generic GopherTrunk example and must not be changed to claim an AIS-catcher integration. At deployment, inspect the Pi's actual AIS-catcher arguments/Compose and add an *additional* UDP destination (do not replace any existing partners), prefer the DNS name subject to partner requirements, then verify outbound messages and partner acknowledgement, if available. Preserve service configuration and rollback. A restart or redeployment requires separate operator approval.
+
+This endpoint is a specialist-receiver **outbound AIS partner feed**, not a GopherTrunk NMEA ingestion endpoint. It does not imply any change to the planned `AIS-B1` bridge.
+
+---
+
 ## 13. Open questions for the operator
 
 1. Docker or LXD/LXC on the Pi today (earlier notes say LXC)? Which tuner is in each dongle?
