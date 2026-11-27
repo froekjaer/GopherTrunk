@@ -61,6 +61,15 @@ func CPRDecodeGlobal(latEven, lonEven, latOdd, lonOdd int, mostRecentIsEven bool
 		latO -= 360
 	}
 
+	// Reject impossible latitude values before calculating NL.
+	// Invalid CPR pairs must never produce a global position.
+	if math.IsNaN(latE) || math.IsNaN(latO) ||
+		math.IsInf(latE, 0) || math.IsInf(latO, 0) ||
+		latE < -90 || latE > 90 ||
+		latO < -90 || latO > 90 {
+		return 0, 0, false
+	}
+
 	// Sanity: even and odd halves must agree on the same NL
 	// (number of longitude zones at this latitude).
 	if cprNL(latE) != cprNL(latO) {
